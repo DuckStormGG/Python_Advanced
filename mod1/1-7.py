@@ -11,7 +11,7 @@ cat_list = ["корниш-рекс", "русская голубая", "шотл�
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 BOOK_FILE = os.path.join(BASE_DIR, "war_and_peace.txt")
 punctuation = string.punctuation + "–«»123456789"
-
+print(BOOK_FILE)
 
 def get_word_list():
     book = []
@@ -66,4 +66,4 @@ def counter():
 counter.visits = 0
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
