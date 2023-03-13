@@ -12,6 +12,6 @@ def decrypt(line):
     line = line.replace('.', '')
     return line
 
-line = sys.stdin.readline()
-if __name__ == '__main__':
-    print(decrypt(line))
+# line = sys.stdin.readline()
+# if __name__ == '__main__':
+#     print(decrypt(line))
