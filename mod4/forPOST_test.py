@@ -1,38 +1,40 @@
-import os
 
-from flask import Flask, request
+
+from flask import Flask
 from flask_wtf import FlaskForm
 
 from wtforms import StringField, IntegerField
-from wtforms.validators import InputRequired, NumberRange, Email, ValidationError, Optional
+from wtforms.validators import InputRequired,  Email, ValidationError, Optional
 
 app = Flask(__name__)
 app.config["WTF_CSRF_ENABLED"] = False
 
 
-
-def number_length(min: int, max: int, message: Optional = None):
+def number_length(max: int, message: Optional = None):
     def _number_length(form, field):
-        if min > field.data or field.data > max:
+        length = (field.data // (10 ** (max-1)))
+        if length+1 != max :
             raise ValidationError("Invalid phone")
 
     return _number_length
 
 
 class NumberLength:
-    def __init__(self, min, max):
-        self.min = min
+    def __init__(self, max):
         self.max = max
 
     def __call__(self, form, field):
-        if self.min > field.data or field.data > self.max:
+        length = (field.data // (10 ** (self.max - 1)))
+        print(self.max)
+        print(length)
+        if length + 1 != self.max:
             raise ValidationError("Invalid phone")
 
 
 class RegistrationForm(FlaskForm):
     email = StringField(validators=[InputRequired(), Email()])
-    # phone = IntegerField(validators=[InputRequired(), number_length(1000000000, 9999999999)])
-    phone = IntegerField(validators=[InputRequired(), NumberLength(1000000000, 9999999999)])
+    # phone = IntegerField(validators=[InputRequired(), number_length(10)])
+    phone = IntegerField(validators=[InputRequired(), NumberLength(10)])
     name = StringField(validators=[InputRequired()])
     address = StringField(validators=[InputRequired()])
     index = IntegerField(validators=[InputRequired()])
