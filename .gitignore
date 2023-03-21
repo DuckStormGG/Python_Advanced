@@ -4,3 +4,7 @@ venv/bin/python3
 venv/bin/python3.10
 venv/lib64
 venv/pyvenv.cfg
+venv/bin/flask
+venv/bin/pip
+venv/bin/pip3
+*.10
