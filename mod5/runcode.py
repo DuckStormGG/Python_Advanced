@@ -23,11 +23,16 @@ def run_python():
     if form.validate_on_submit():
         code, timeout = form.code.data, form.timeout.data
         cmd = f'prlimit --nproc=1:1 python3 -c "{code}"'
-        test = subprocess.run(cmd, shell=True, capture_output=True, timeout=timeout)
-        if test.returncode != 0:
-            return test.stderr
-        else:
-            return test.stdout
+        program = subprocess.Popen(cmd, shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
+        try:
+            out, err = program.communicate(timeout=timeout)
+            if program.returncode != 0:
+                return err
+            else:
+                return out
+        except subprocess.TimeoutExpired:
+            program.kill()
+            return "Timeout"
     return f"{form.errors}", 400
 
 
