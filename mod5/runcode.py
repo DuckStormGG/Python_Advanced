@@ -25,10 +25,14 @@ def run_python():
         cmd = f'prlimit --nproc=1:1 python3 -c "{code}"'
         program = subprocess.Popen(cmd, shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
         try:
-            out , err = program.communicate(timeout = timeout)
-            return out , err
+            out, err = program.communicate(timeout=timeout)
+            if program.returncode != 0:
+                return err
+            else:
+                return out
         except subprocess.TimeoutExpired:
             program.kill()
+            return "Timeout"
     return f"{form.errors}", 400
 
 
